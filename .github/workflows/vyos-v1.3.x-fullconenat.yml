@@ -34,7 +34,7 @@ jobs:
         git clone -b equuleus --single-branch https://github.com/vyos/vyos-build
 
    
-    - name: Download deb from my server
+    - name: Download deb from debian official
       run:  |
          set -eux
          cd vyos-build
