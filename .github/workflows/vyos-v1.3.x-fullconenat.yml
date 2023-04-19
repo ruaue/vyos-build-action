@@ -5,7 +5,7 @@ permissions:
 on:
   push:
     tags:
-      - "*FULL*"
+      - "v1.3*"
 
 jobs:
   build:
