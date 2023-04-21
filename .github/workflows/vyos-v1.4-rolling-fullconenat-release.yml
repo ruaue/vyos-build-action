@@ -4,7 +4,7 @@ permissions:
 on:
   push:
     tags:
-      - "*FULL*"
+      - "v1.4*FULL*"
 
 env:
   GIT_CLONE_URL: https://github.com/vyos/vyos-build
