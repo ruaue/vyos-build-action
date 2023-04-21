@@ -65,7 +65,8 @@ jobs:
         working-directory: ./${{ env.WORKING_DIR }}
         run: |
           make iso && echo $STATUS_SUCCESS
-          cp -f ./build/vyos-$BUILD_VERSION-FLLCONENAT-$BUILD_ARCH.iso ./$ARTIFACTS_DIR/
+          
+          cp -f ./build/vyos-$BUILD_VERSION-FULLCONENAT-$BUILD_ARCH.iso ./$ARTIFACTS_DIR/
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
