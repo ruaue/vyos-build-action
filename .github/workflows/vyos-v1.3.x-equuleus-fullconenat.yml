@@ -89,8 +89,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: VyOS v${{ env.BUILD_VERSION }} LTS Release
-          body: VyOS v${{ env.BUILD_VERSION }} LTS Release
+          name: VyOS v${{ env.BUILD_VERSION }} LTS FULLCONENAT Release
+          body: VyOS v${{ env.BUILD_VERSION }} LTS FULLCONENAT Release
           draft: false
           prerelease: false
           files: vyos-${{ env.BUILD_VERSION }}-FULLCONENAT-${{ env.BUILD_ARCH }}.iso
