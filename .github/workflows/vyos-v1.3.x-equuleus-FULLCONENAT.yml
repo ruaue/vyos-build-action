@@ -4,7 +4,7 @@ permissions:
 on:
   push:
     tags:
-      - 'vv1.3.*'
+      - 'v1.3.*FULL*'
 
 env:
   GIT_CLONE_URL: https://github.com/vyos/vyos-build
@@ -34,20 +34,43 @@ jobs:
         run: |
           git clone -b $BRANCH --single-branch $GIT_CLONE_URL $WORKING_DIR
           cd $WORKING_DIR
-          ./configure --architecture $BUILD_ARCH --build-by $BUILD_BY --build-type $BUILD_TYPE --version $BUILD_VERSION
+          ./configure --architecture $BUILD_ARCH --build-by $BUILD_BY --build-type $BUILD_TYPE --version $BUILD_VERSION-FULLCONENAT
           mkdir -p ./$ARTIFACTS_DIR
-
+          
+      - name: Download deb from debian official
+        run:  |
+         set -eux
+         cd vyos-build
+         wget -P  packages/ http://http.us.debian.org/debian/pool/main/i/ipset/ipset_6.38-1.2_amd64.deb 
+         wget -P  packages/ http://http.us.debian.org/debian/pool/main/i/ipset/libipset11_6.38-1.2_amd64.deb
+    
+      - name: Download kernel deb from my another repo
+        uses: robinraju/release-downloader@v1.7
+        with:
+         repository: "debiansid/vyos-kernel-lts-build"
+         tag: "5.4.240"
+         fileName: "*.deb"
+         out-file-path: "vyos-build/packages/"
+       
+      - name: Download iptables deb from my another repo
+        uses: robinraju/release-downloader@v1.7
+        with:
+         repository: "debiansid/iptables-fullconenat"
+         tag: "debian/1.8.2-4"
+         fileName: "*.deb"
+         out-file-path: "vyos-build/packages/"    
+         
       - name: Build ISO Image
         id: iso
         working-directory: ./${{ env.WORKING_DIR }}
         run: |
           make iso && echo $STATUS_SUCCESS
-          cp -f ./build/vyos-$BUILD_VERSION-$BUILD_ARCH.iso ./$ARTIFACTS_DIR/
+          cp -f ./build/vyos-$BUILD_VERSION-FLLCONENAT-$BUILD_ARCH.iso ./$ARTIFACTS_DIR/
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}.iso
+          name: vyos-${{ env.BUILD_VERSION }}-FULLCONENAT-${{ env.BUILD_ARCH }}.iso
           path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_DIR }}
 
   release:
@@ -58,7 +81,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}.iso
+          name: vyos-${{ env.BUILD_VERSION }}-FULLCONENAT-${{ env.BUILD_ARCH }}.iso
           
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -69,5 +92,5 @@ jobs:
           body: VyOS v${{ env.BUILD_VERSION }} LTS Release
           draft: false
           prerelease: false
-          files: vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}.iso
+          files: vyos-${{ env.BUILD_VERSION }}-FULLCONENAT-${{ env.BUILD_ARCH }}.iso
             
