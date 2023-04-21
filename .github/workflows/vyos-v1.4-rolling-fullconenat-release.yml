@@ -56,27 +56,23 @@ jobs:
           sudo make clean
           sudo ./build-vyos-image iso --architecture $ARCHITECTURE --build-by $BUILD_BY --build-type $BUILD_TYPE --version $VERSION-FULLCONENAT
 
+      - name: ls
+        run: |
+         set -eux
+
+         pwd
+         ls -lah
+         ls -lah vyos-build/build
       
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Upload release
-      uses: softprops/action-gh-release@v1
-      with:
+ 
+      - name: Upload release
+        uses: softprops/action-gh-release@v1
+        with:
           tag_name: ${{ github.ref_name }}
           files: vyos-build/build/vyos-${{ env.RELEASE_VERSION }}-*.iso
           body: |
-            VyOS ${{ env.RELEASE_VERSION }} LTS
+             VyOS ${{ env.RELEASE_VERSION }} LTS
           draft: true
           prerelease: true
 
-  delete_old_workflow_runs:
-    needs: release
-    runs-on: ubuntu-latest
 
-    steps:
-      - name: Delete old workflow runs
-        uses: GitRML/delete-workflow-runs@main
-        with:
-          retain_days: 31
