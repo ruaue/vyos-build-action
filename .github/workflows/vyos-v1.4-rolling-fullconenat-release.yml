@@ -21,8 +21,11 @@ jobs:
     container:
       image: vyos/vyos-build:current
       options: --workdir /vyos --privileged
-
+   
     steps:
+      - name: Set env
+        run: |
+         echo "RELEASE_VERSION=${GITHUB_REF:10}" >> $GITHUB_ENV 
       - name: Clone source code
         run: git clone -b $BRANCH --single-branch $GIT_CLONE_URL
 
@@ -55,12 +58,7 @@ jobs:
           sudo make clean
           sudo ./build-vyos-image iso --architecture $ARCHITECTURE --build-by $BUILD_BY --build-type $BUILD_TYPE --version $VERSION-FULLCONENAT
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso
-          path: vyos-build/build/vyos-${{ env.VERSION }}-*.iso
-
+      
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -69,7 +67,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
           tag_name: ${{ github.ref_name }}
-          files: vyos-build/build/vyos-${{ env.RELEASE_VERSION }}-amd64.iso
+          files: vyos-build/build/vyos-${{ env.RELEASE_VERSION }}-*.iso
           body: |
             VyOS ${{ env.RELEASE_VERSION }} LTS
           draft: true
