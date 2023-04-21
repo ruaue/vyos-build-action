@@ -1,4 +1,4 @@
-name: VyOS rolling fullconenat Build and Release
+name: VyOS v1.4 Rolling Release
 permissions:
   contents: write
 on:
@@ -6,84 +6,89 @@ on:
     tags:
       - "*FULL*"
 
+env:
+  GIT_CLONE_URL: https://github.com/vyos/vyos-build
+  BRANCH: current
+  ARCHITECTURE: amd64
+  BUILD_BY: vyos-build-action@github.com
+  BUILD_TYPE: release
+  VERSION: 1.4-rolling
+  DEBIAN_MIRROR: http://ftp.us.debian.org/debian/
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: 
-      # For VyOS 1.2 (crux) use vyos/vyos-build:crux
-      # For VyOS 1.3 (equuleus) use vyos/vyos-build:equuleus
-      # For our VyOS rolling release you should use vyos/vyos-build which will always refer to the latest image.
-      # Ref: https://docs.vyos.io/en/latest/contributing/build-vyos.html#build
-      
-
+    container:
       image: vyos/vyos-build:current
-      env:
-        TZ: Asia/Shanghai
-      options: --privileged
-      
+      options: --workdir /vyos --privileged
 
     steps:
-    - name: Set env
-      run: |
-        echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-        
-        
-    - name: git clone vyos-build
-      run: |
-        set -eux
-        
-        git clone  -b current https://github.com/vyos/vyos-build vyos-build
+      - name: Clone source code
+        run: git clone -b $BRANCH --single-branch $GIT_CLONE_URL
 
-    
-      
-    - name: Download deb from upstream
+      - name: Download deb from upstream
       run:  |
          set -eux
          cd vyos-build
          wget -P  packages/ http://http.us.debian.org/debian/pool/main/i/ipset/libipset13_7.17-1_amd64.deb
          wget -P  packages/ http://http.us.debian.org/debian/pool/main/i/ipset/ipset_7.17-1_amd64.deb 
     
-    - name: Download kernel deb from my another repo
-      uses: robinraju/release-downloader@v1.7
-      with:
-       repository: "debiansid/vyos-kernel-rolling"
-       latest: true
-       fileName: "*.deb"
-       out-file-path: "vyos-build/packages/"
+      - name: Download kernel deb from my another repo
+          uses: robinraju/release-downloader@v1.7
+          with:
+          repository: "debiansid/vyos-kernel-rolling"
+          latest: true
+          fileName: "*.deb"
+          out-file-path: "vyos-build/packages/"
        
-    - name: Download iptables deb from my another repo
-      uses: robinraju/release-downloader@v1.7
-      with:
-       repository: "debiansid/iptables-fullconenat"
-       latest: true
-       fileName: "*.deb"
-       out-file-path: "vyos-build/packages/"
-     
-    - name: make iso
-      working-directory: vyos-build
-      run: |
-        sudo --preserve-env ./build-vyos-image \
-                            --build-by gpt@openai.com \
-                            --build-type release \
-                            --custom-package prometheus-node-exporter \
-                            --version ${{ env.RELEASE_VERSION }} iso
-          
+      - name: Download iptables deb from my another repo
+           uses: robinraju/release-downloader@v1.7
+           with:
+           repository: "debiansid/iptables-fullconenat"
+           latest: true
+           fileName: "*.deb"
+           out-file-path: "vyos-build/packages/"
 
-    - name: ls
-      run: |
-        set -eux
+      - name: Build ISO
+        working-directory: ./vyos-build
+        run: |
+          sudo make clean
+          sudo ./build-vyos-image iso --architecture $ARCHITECTURE --build-by $BUILD_BY --build-type $BUILD_TYPE --version $VERSION-FULLCONENAT
 
-        pwd
-        ls -lah
-        ls -lah vyos-build/build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso
+          path: vyos-build/build/vyos-${{ env.VERSION }}-*.iso
 
-    - name: Upload release
-      uses: softprops/action-gh-release@v1
-      with:
-          tag_name: ${{ github.ref_name }}
-          files: vyos-build/build/vyos-${{ env.RELEASE_VERSION }}-amd64.iso
-          body: |
-            VyOS ${{ env.RELEASE_VERSION }} LTS
-          draft: true
-          prerelease: true
-          
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso
+          path: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso
+
+      - name: Upload release asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          asset=$(find ./vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso/ -name "vyos-${{ env.VERSION }}-*.iso" | xargs)
+          tag_name="v${{ env.VERSION }}"
+          hub release edit -a "$asset" -m "" "$tag_name"
+
+  delete_old_workflow_runs:
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Delete old workflow runs
+        uses: GitRML/delete-workflow-runs@main
+        with:
+          retain_days: 31
