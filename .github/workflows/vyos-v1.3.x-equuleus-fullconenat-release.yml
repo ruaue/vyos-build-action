@@ -48,7 +48,7 @@ jobs:
         uses: robinraju/release-downloader@v1.7
         with:
          repository: "debiansid/vyos-kernel-lts-build"
-         tag: "5.4.240"
+         tag: "5.4.234"
          fileName: "*.deb"
          out-file-path: "vyos-build/packages/"
        
