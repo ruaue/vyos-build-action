@@ -110,8 +110,8 @@ jobs:
           prerelease: false
           files: |
             vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}.iso
-            vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}-qemu.img
-            vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}-qemu.qcow2
-            vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}-hyperv.vhd
-            vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}-vmware-signed.ova
-            vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}-vmware.vmdk
+   #         vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}-qemu.img
+   #         vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}-qemu.qcow2
+   #         vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}-hyperv.vhd
+    #        vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}-vmware-signed.ova
+     #       vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}-vmware.vmdk
