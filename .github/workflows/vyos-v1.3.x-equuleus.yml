@@ -26,9 +26,7 @@ env:
   STATUS_SUCCESS: "::set-output name=status::success"
 
 jobs:
-    permissions:
-    contents: write
-    build:
+  build:
     runs-on: ubuntu-latest
 
     container:
@@ -91,10 +89,11 @@ jobs:
           path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_DIR }}
 
   release:
-    needs: build
-    runs-on: ubuntu-latest
+      permissions: write-all
+      needs: build
+      runs-on: ubuntu-latest
 
-    steps:
+      steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
