@@ -60,6 +60,7 @@ jobs:
           hub release edit -a "$asset" -m "" "$tag_name"
 
   delete_old_workflow_runs:
+    permissions: write-all
     needs: release
     runs-on: ubuntu-latest
 
