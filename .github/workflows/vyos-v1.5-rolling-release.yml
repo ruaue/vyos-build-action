@@ -1,4 +1,4 @@
-name: VyOS v1.4 Rolling Release
+name: VyOS v1.5 Rolling Release
 permissions:
   contents: write
 on:
@@ -11,7 +11,7 @@ env:
   ARCHITECTURE: amd64
   BUILD_BY: vyos-build-action@github.com
   BUILD_TYPE: release
-  VERSION: 1.4-rolling
+  VERSION: 1.5-rolling
   DEBIAN_MIRROR: http://ftp.us.debian.org/debian/
 
 jobs:
