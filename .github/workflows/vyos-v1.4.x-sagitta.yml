@@ -19,7 +19,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: vyos/vyos-build:current
+      image: vyos/vyos-build:sagitta
       options: --workdir /vyos --privileged
 
     steps:
