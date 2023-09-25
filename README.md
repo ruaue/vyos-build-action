@@ -1,6 +1,6 @@
 # VyOS ISO Automation Build
 
-Automate build VyOS v1.2 LTS, v1.3 LTS Release and v1.4 Rolling Release ISO files.
+Automate build VyOS v1.2 LTS, v1.3 LTS Release, v1.4 LTS Release and v1.5 Rolling Release ISO files.
 
 ## About this repository
 
