@@ -32,7 +32,7 @@ jobs:
 
       - name: Clone Source Code
         run: |
-          git clone -b $BRANCH --single-branch $GIT_CLONE_URL $WORKING_DIR
+          git clone -b $BUILD_VERSION --single-branch $GIT_CLONE_URL $WORKING_DIR
           cd $WORKING_DIR
           ./configure --architecture $BUILD_ARCH --build-by $BUILD_BY --build-type $BUILD_TYPE --version $BUILD_VERSION-FULLCONENAT
           mkdir -p ./$ARTIFACTS_DIR
