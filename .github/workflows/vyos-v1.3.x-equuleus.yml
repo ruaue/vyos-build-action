@@ -13,6 +13,7 @@ env:
   BUILD_BY: vyos-build-action@github.com
   BUILD_TYPE: release
   BUILD_VERSION: 1.3.4
+  TAG_NAME: 1.3.4
   BUILD_QEMU: true
   BUILD_QCOW2: true
   BUILD_HYPERV: true
@@ -39,7 +40,7 @@ jobs:
 
       - name: Clone Source Code
         run: |
-          git clone -b $BRANCH --single-branch $GIT_CLONE_URL $WORKING_DIR
+          git clone --branch $TAG_NAME --single-branch $GIT_CLONE_URL $WORKING_DIR
           cd $WORKING_DIR
           ./configure --architecture $BUILD_ARCH --build-by $BUILD_BY --build-type $BUILD_TYPE --version $BUILD_VERSION
           mkdir -p ./$ARTIFACTS_DIR
