@@ -22,7 +22,7 @@ For VyOS v1.2.x LTS release, action trigger by a tag push. It will build the ISO
 
 For VyOS v1.3.x LTS release, action trigger by a tag push. It will build the ISO and VM image files, create a release and upload the release asset.
 
-[vyos-v1.4-rolling-release.yml](.github/workflows/vyos-v1.4-rolling-release.yml)
+[vyos-v1.5-rolling-release.yml](.github/workflows/vyos-v1.5-rolling-release.yml)
 
 For VyOs v1.4 rolling release, action trigger on schedule every day. ISO file can be found in the Action Artifacts section.
 
