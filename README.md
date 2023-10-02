@@ -24,7 +24,7 @@ For VyOS v1.3.x LTS release, action trigger by a tag push. It will build the ISO
 
 [vyos-v1.5-rolling-release.yml](.github/workflows/vyos-v1.5-rolling-release.yml)
 
-For VyOs v1.4 rolling release, action trigger on schedule every day. ISO file can be found in the Action Artifacts section.
+For VyOs v1.5 rolling release, action trigger on schedule every day. ISO file can be found in the Action Artifacts section.
 
 You can edit the workflow files to modify the trigger conditions to suit your needs.
 
