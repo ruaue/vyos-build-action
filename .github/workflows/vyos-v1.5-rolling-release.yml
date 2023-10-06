@@ -2,7 +2,7 @@ name: VyOS v1.5 Rolling Release
 permissions:
   contents: write
 on:
- workflow_dispatch:
+  workflow_dispatch:
   schedule:
     - cron: 0 3 * * *
 
@@ -14,7 +14,7 @@ env:
   BUILD_TYPE: release
   VERSION: 1.5-rolling
   DEBIAN_MIRROR: http://ftp.us.debian.org/debian/
-  ACTIONS_ALLOW_UNSECURE_COMMANDS:true
+ 
   
 jobs:
   build:
@@ -53,6 +53,8 @@ jobs:
           path: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso
       - name: Install hub
         uses: geertvdc/setup-hub@v1.0.0
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS:true
       - name: Upload release asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
