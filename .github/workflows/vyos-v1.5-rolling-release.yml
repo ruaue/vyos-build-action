@@ -59,7 +59,7 @@ jobs:
           asset=$(find ./vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso/ -name "vyos-${{ env.VERSION }}-*.iso" | xargs)
           tag_name="v${{ env.VERSION }}"
       - name: Release iso
-        uses: elgohr/Github-Hub-Action@1.3
+        uses: elgohr/Github-Hub-Action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with: 
