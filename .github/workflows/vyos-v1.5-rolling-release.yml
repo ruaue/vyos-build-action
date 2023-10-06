@@ -15,7 +15,7 @@ env:
   VERSION: 1.5-rolling
   DEBIAN_MIRROR: http://ftp.us.debian.org/debian/
 
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION : true
  
   
 jobs:
