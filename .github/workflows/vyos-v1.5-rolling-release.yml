@@ -53,9 +53,12 @@ jobs:
         with:
           name: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso
           path: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso
+      - name: Install hub
+        uses: geertvdc/setup-hub@master
+        
       - name: Upload release asset
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           asset=$(find ./vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso/ -name "vyos-${{ env.VERSION }}-*.iso" | xargs)
           tag_name="v${{ env.VERSION }}"
