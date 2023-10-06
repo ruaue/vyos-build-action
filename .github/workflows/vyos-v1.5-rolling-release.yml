@@ -45,7 +45,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
+      - name: Install hub
+        uses: geertvdc/setup-hub@master
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -58,12 +59,7 @@ jobs:
         run: |
           asset=$(find ./vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso/ -name "vyos-${{ env.VERSION }}-*.iso" | xargs)
           tag_name="v${{ env.VERSION }}"
-      - name: Release iso
-        uses: elgohr/Github-Hub-Action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with: 
-          args: release edit -a "$asset" -m "" "$tag_name"
+          hub release edit -a "$asset" -m "" "$tag_name"
 
   delete_old_workflow_runs:
     permissions: write-all
