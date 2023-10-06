@@ -51,10 +51,6 @@ jobs:
         with:
           name: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso
           path: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso
-      - name: Install hub
-        uses: geertvdc/setup-hub@v1.0.0
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS:true
       - name: Upload release asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
