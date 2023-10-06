@@ -2,6 +2,7 @@ name: VyOS v1.5 Rolling Release
 permissions:
   contents: write
 on:
+ workflow_dispatch:
   schedule:
     - cron: 0 3 * * *
 
