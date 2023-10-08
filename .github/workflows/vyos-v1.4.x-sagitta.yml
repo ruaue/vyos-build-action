@@ -15,6 +15,7 @@ env:
   VERSION: 1.4.0
   DEBIAN_MIRROR: http://ftp.us.debian.org/debian/
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,35 +40,25 @@ jobs:
           path: vyos-build/build/vyos-${{ env.VERSION }}-*.iso
 
   release:
-    needs: build
-    runs-on: ubuntu-latest
+      permissions: write-all
+      needs: build
+      runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Download artifact
-        uses: actions/download-artifact@v3
+      steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
         with:
-          name: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso
-          path: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso
+          name: vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}-images
 
-      - name: Upload release asset
+      - name: Release
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          asset=$(find ./vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}-iso/ -name "vyos-${{ env.VERSION }}-*.iso" | xargs)
-          tag_name="v${{ env.VERSION }}"
-          hub release edit -a "$asset" -m "" "$tag_name"
-
-  delete_old_workflow_runs:
-    permissions: write-all
-    needs: release
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Delete old workflow runs
-        uses: GitRML/delete-workflow-runs@main
         with:
-          retain_days: 31
-
+          name: VyOS v${{ env.BUILD_VERSION }} LTS Release
+          body: VyOS v${{ env.BUILD_VERSION }} LTS Release
+          draft: false
+          prerelease: false
+          files: |
+            vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}.iso
+           
