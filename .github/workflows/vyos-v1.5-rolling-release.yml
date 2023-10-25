@@ -1,4 +1,4 @@
-name: VyOS v1.5 Rolling Release
+name: VyOS v1.5 circinus Release
 permissions:
   contents: write
 on:
