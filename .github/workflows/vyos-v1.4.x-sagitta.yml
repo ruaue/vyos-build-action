@@ -48,7 +48,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}.iso
+          name: vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}.iso
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -60,5 +60,5 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            vyos-${{ env.BUILD_VERSION }}-${{ env.BUILD_ARCH }}.iso
+            vyos-${{ env.VERSION }}-${{ env.ARCHITECTURE }}.iso
            
