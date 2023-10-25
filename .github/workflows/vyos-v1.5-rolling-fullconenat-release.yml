@@ -1,4 +1,4 @@
-name: VyOS v1.5 Circinus FULLCONENAT Release
+name: VyOS v1.5 Rolling FULLCONENAT Release
 permissions:
   contents: write
 on:
