@@ -1,10 +1,10 @@
-name: VyOS v1.5 Rolling FULLCONENAT Release
+name: VyOS v1.5 Rolling nft-fullcone Release
 permissions:
   contents: write
 on:
   push:
     tags:
-      - "v1.5*FULL*"
+      - "v1.5*nft*"
 
 env:
   GIT_CLONE_URL: https://github.com/vyos/vyos-build
@@ -37,15 +37,23 @@ jobs:
       - name: Download kernel deb from my another repo
         uses: robinraju/release-downloader@v1.7
         with:
-          repository: "debiansid/vyos-kernel-rolling"
+          repository: "ruau/vyos-kernel-rolling"
           latest: true
           fileName: "*.deb"
           out-file-path: "vyos-build/packages/"
        
-      - name: Download iptables deb from my another repo
+      - name: Download libnftnl deb from my another repo
         uses: robinraju/release-downloader@v1.7
         with:
-           repository: "debiansid/iptables-fullconenat"
+           repository: "debiansid/libnftnl-fullcone"
+           latest: true
+           fileName: "*.deb"
+           out-file-path: "vyos-build/packages/"
+
+      - name: Download nftables deb from my another repo
+        uses: robinraju/release-downloader@v1.7
+        with:
+           repository: "debiansid/nftables-fullcone"
            latest: true
            fileName: "*.deb"
            out-file-path: "vyos-build/packages/"
