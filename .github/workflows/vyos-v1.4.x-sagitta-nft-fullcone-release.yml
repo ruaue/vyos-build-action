@@ -27,13 +27,6 @@ jobs:
       - name: Clone source code
         run: git clone -b $BRANCH --single-branch $GIT_CLONE_URL
 
-      - name: Download deb from upstream
-        run: |
-         set -eux
-         cd vyos-build
-         wget -P  packages/ http://http.us.debian.org/debian/pool/main/i/ipset/libipset13_7.17-1_amd64.deb
-         wget -P  packages/ http://http.us.debian.org/debian/pool/main/i/ipset/ipset_7.17-1_amd64.deb 
-    
       - name: Download kernel deb from my another repo
         uses: robinraju/release-downloader@v1.7
         with:
