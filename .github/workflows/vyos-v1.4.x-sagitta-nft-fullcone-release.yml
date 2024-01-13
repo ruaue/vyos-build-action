@@ -30,8 +30,8 @@ jobs:
       - name: Download kernel deb from my another repo
         uses: robinraju/release-downloader@v1.7
         with:
-          repository: "debiansid/vyos-kernel-rolling"
-          tag: "6.6.9"
+          repository: "ruau/vyos-kernel-rolling"
+          latest: true
           fileName: "*.deb"
           out-file-path: "vyos-build/packages/"
        
