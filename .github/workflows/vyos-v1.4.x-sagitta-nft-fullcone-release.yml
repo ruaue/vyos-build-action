@@ -25,13 +25,14 @@ jobs:
     steps:
       
       - name: Clone source code
-        run: git clone -b $BRANCH --single-branch $GIT_CLONE_URL
+        run: git clone -b 1.4.0-epa1 --single-branch $GIT_CLONE_URL
 
       - name: Download kernel deb from my another repo
         uses: robinraju/release-downloader@v1.7
         with:
           repository: "ruau/vyos-kernel-rolling"
-          latest: true
+          latest: false
+          tag: "6.6.17"
           fileName: "*.deb"
           out-file-path: "vyos-build/packages/"
        
