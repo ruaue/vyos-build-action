@@ -25,7 +25,7 @@ jobs:
     steps:
       
       - name: Clone source code
-        run: git clone -b 1.4.0-epa1 --single-branch $GIT_CLONE_URL
+        run: git clone -b $BRANCH --single-branch $GIT_CLONE_URL
 
       - name: Download kernel deb from my another repo
         uses: robinraju/release-downloader@v1.7
