@@ -31,8 +31,7 @@ jobs:
         uses: robinraju/release-downloader@v1.7
         with:
           repository: "ruau/vyos-kernel-rolling"
-          latest: false
-          tag: "6.6.17"
+          latest: true
           fileName: "*.deb"
           out-file-path: "vyos-build/packages/"
        
