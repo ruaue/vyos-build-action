@@ -62,7 +62,7 @@ jobs:
         working-directory: ./vyos-build
         run: |
           sudo make clean
-          sudo ./build-vyos-image iso --architecture $ARCHITECTURE --build-by $BUILD_BY --build-type $BUILD_TYPE --version $VERSION-fullcone
+          sudo ./build-vyos-image iso --architecture $ARCHITECTURE --build-by $BUILD_BY --build-type $BUILD_TYPE  --version $VERSION-fullcone generic
 
       - name: ls
         run: |
