@@ -4,7 +4,7 @@ permissions:
 on:
   push:
     tags:
-      - "v1.5*nft*"
+      - "v1.5-stream*"
 
 env:
   GIT_CLONE_URL: https://github.com/vyos/vyos-build
@@ -12,14 +12,14 @@ env:
   ARCHITECTURE: amd64
   BUILD_BY: vyos-build-action@github.com
   BUILD_TYPE: release
-  VERSION: 1.5-rolling
+  VERSION: 1.5-stream
   DEBIAN_MIRROR: http://ftp.us.debian.org/debian/
 
 jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: vyos/vyos-build:current
+      image: vyos/vyos-build:1.5-stream-2025-Q1
       options: --workdir /vyos --privileged
    
     steps:
